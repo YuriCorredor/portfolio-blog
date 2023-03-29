@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next- @typescript-eslint/no-var-requires
 const path = require("path");
 
 /** @type {import("eslint").Linter.Config} */
@@ -29,6 +29,12 @@ const config = {
       },
     ],
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    "semi": ["warn", "always"],
+    "indent": ["warn", 2],
+    "quotes": ["warn", "double", { "avoidEscape": true }],
+    "jsx-quotes": ["warn", "prefer-double"],
+    "eol-last": ["warn", "always"],
+    "no-trailing-spaces": "warn"
   },
 };
 
