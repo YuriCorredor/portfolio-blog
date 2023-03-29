@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  overflow: hidden;
+}
+
 .gutter {
   cursor: e-resize;
+  background-color: black;
 }
