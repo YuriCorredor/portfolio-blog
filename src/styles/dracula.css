@@ -11,39 +11,37 @@
  */
 
  .hljs {
-  min-width: 300px;
-  width: fit-content;
-  white-space: pre-wrap;
-  display: block;
-  overflow-x: auto;
-  padding: 0.5em;
-  background: #282a36;
-  margin: 0.5em 0;
-  border: 5px solid #44475a;
-  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  white-space: pre-wrap !important;
+  display: block !important;
+  overflow-x: auto !important;
+  padding: 0.5em !important;
+  background: #282a36 !important;
+  margin: 0.5em 0 !important;
+  border: 2px solid #44475a !important;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace !important;
 }
 
 .hljs-built_in,
 .hljs-selector-tag,
 .hljs-section,
 .hljs-link {
-  color: #8be9fd;
+  color: #8be9fd !important;
 }
 
 .hljs-keyword {
-  color: #ff79c6;
+  color: #ff79c6 !important;
 }
 
 .hljs,
 .hljs-subst {
-  color: #f8f8f2;
+  color: #f8f8f2 !important;
 }
 
 .hljs-title,
 .hljs-attr,
 .hljs-meta-keyword {
-  font-style: italic;
-  color: #50fa7b;
+  font-style: italic !important;
+  color: #50fa7b !important;
 }
 
 .hljs-string,
@@ -55,20 +53,20 @@
 .hljs-variable,
 .hljs-template-tag,
 .hljs-template-variable {
-  color: #f1fa8c;
+  color: #f1fa8c !important;
 }
 
 .hljs-addition {
-  color: #25ff5b;
+  color: #25ff5b !important;
 }
 
 .hljs-comment,
 .hljs-quote {
-  color: #6272a4;
+  color: #6272a4 !important;
 }
 
 .hljs-deletion {
-  color: #ff5555;
+  color: #ff5555 !important;
 }
 
 .hljs-keyword,
@@ -80,14 +78,14 @@
 .hljs-type,
 .hljs-name,
 .hljs-strong {
-  font-weight: bold;
+  font-weight: bold !important;
 }
 
 .hljs-literal,
 .hljs-number {
-  color: #bd93f9;
+  color: #bd93f9 !important;
 }
 
 .hljs-emphasis {
-  font-style: italic;
+  font-style: italic !important;
 }

@@ -1,12 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  overflow: hidden;
+@font-face {
+  font-family: "nav";
+  src: url("../../public/fonts/Agustina-Signature.otf");
 }
 
+/* ADD SOME DEFAULTS */
+body {
+  font-family: "Inter var", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  overflow: hidden;
+  background-color: black;
+}
+ul > li > ul {
+  margin-left: 1rem;
+  list-style-type: circle !important;
+}
+ul > li > ul > li > ul {
+  margin-left: 1rem;
+  list-style-type: square !important;
+}
+
+/* ADD GUTTER STYLES */
 .gutter {
   cursor: e-resize;
-  background-color: black;
+  background-color: #282a36;
+  width: 0.2rem !important;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-delay: 100ms;
+}
+.gutter:hover {
+  background-color: #44475a;
+}
+
+/* ADD SCROLLBAR STYLES */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: black;
+}
+::-webkit-scrollbar-thumb {
+  background: #44475a;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #383b50;
+}
+
+/* ADD CODE STYLES */
+.title-2xl {
+  @apply text-white font-extrabold text-2xl sm:text-3xl lg:text-4xl tracking-tight my-8
+}
+.title-xl {
+  @apply text-white font-extrabold text-xl sm:text-2xl lg:text-3xl tracking-tight my-6
+}
+.title-lg {
+  @apply text-white font-extrabold text-lg sm:text-xl lg:text-2xl tracking-tight my-4
+}
+.title-md {
+  @apply text-white font-bold text-lg sm:text-lg lg:text-xl tracking-tight my-2
+}
+.title-sm {
+  @apply text-white font-bold text-lg sm:text-lg lg:text-xl tracking-tight my-1
+}
+.paragraph {
+  @apply text-base text-slate-200 my-2 leading-relaxed tracking-tight
+}
+.anchor {
+  @apply font-semibold text-sky-400 hover:underline
+}
+.code {
+  @apply text-slate-100 rounded-sm px-1 py-0.5 bg-[#282a36]
+}
+.blockquote {
+  @apply border-l-4 border-slate-300 pl-4 text-slate-400 opacity-80 italic
+}
+.unordered {
+  @apply list-outside list-disc text-slate-200 pl-4
+}
+.ordered {
+  @apply list-outside list-decimal text-slate-200 pl-4
+}
+.list-item {
+  @apply my-1
+}
+.table {
+  @apply table-auto text-left text-slate-200 border-collapse border-2 border-[#44475a]
+}
+.table-head-cell {
+  @apply px-4 py-2 text-slate-200 font-bold border-2 border-[#44475a]
+}
+.table-cell {
+  @apply border-2 border-[#44475a] px-4 py-2
+}
+.details {
+  @apply text-slate-200 py-4
+}
+.summary {
+  @apply text-slate-200 font-bold cursor-pointer
 }
