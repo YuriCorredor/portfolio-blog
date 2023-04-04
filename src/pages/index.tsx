@@ -3,7 +3,7 @@ import { api } from '~/utils/api'
 import { makeHTMLFromMarkdown } from '~/utils/convertFromMDToHTML'
 import Link from 'next/link'
 
-export default function CreatePost() {
+export default function Home() {
   const { data: posts } = api.post.getAllPosts.useQuery()
 
   const formatTitle = (title: string) => {

@@ -55,7 +55,7 @@ export default function Nav() {
         <div className='max-w-7xl flex w-full justify-between items-center flex-row whitespace-nowrap'>
           <div className='flex font-nav text-xl md:text-2xl lg:text-3xl font-extrabold'>
             <a href='https://yuricorredor.com.br/' className='cursor-pointer hover:text-[#ddd] hover:scale-110 transition-all'>
-              <span>{`<`} Yuri Corredor</span>
+              <span>{`<`}Yuri Corredor</span>
               <span className='pl-2'>{'/>'}</span>
             </a>
           </div>
