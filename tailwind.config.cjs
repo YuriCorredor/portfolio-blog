@@ -2,7 +2,9 @@
 const config = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    fontFamily: {
+      nav: ["nav", "regular"],
+    },
   },
   plugins: [],
 };
