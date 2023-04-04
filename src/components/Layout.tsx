@@ -1,4 +1,5 @@
 import Head from "next/head"
+import Nav from "./layout/Nav"
 
 type ComponentProps = {
   children: React.ReactNode
@@ -14,7 +15,8 @@ export default function Layout({
         <meta name="description" content="" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex h-screen w-screen bg-black overflow-hidden">
+      <main className="flex flex-col h-screen w-screen bg-black overflow-y-auto">
+        <Nav />
         {children}
       </main>
     </>
