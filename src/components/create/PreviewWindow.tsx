@@ -1,24 +1,61 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAtom } from 'jotai'
-import { postTextAtom } from '~/store/createPostAtom'
-import showdown from 'showdown'
+import { postAtom } from '~/store/postAtom'
 import hljs from 'highlight.js'
-
-const converter = new showdown.Converter()
+import { makeHTMLFromMarkdown } from '~/utils/convertFromMDToHTML'
 
 export default function PreviewWindow() {
-  const [postText] = useAtom(postTextAtom)
-  const postTextHTML = converter.makeHtml(postText)
+  const [post] = useAtom(postAtom)
+  const [previousHTML, setPreviousHTML] = useState<HTMLElement>()
+  const [html, setHTML] = useState<HTMLElement>()
 
   useEffect(() => {
-    hljs.highlightAll()
-  }, [postText])
+    const postTextHTML = makeHTMLFromMarkdown(post)
+    const newHtml = new DOMParser().parseFromString(postTextHTML, 'text/html').body
+    setPreviousHTML(html)
+    setHTML(newHtml)
+  }, [post])
 
-  console.log(postTextHTML)
+  useEffect(() => {
+    const post = document.getElementById('post')
+    if (post && typeof html === 'object') {
+      post.innerHTML = html.innerHTML
+    }
+  }, [html])
+
+  useEffect(() => {
+    const post = document.getElementById('post')
+    if (typeof previousHTML === 'object' && post && typeof post === 'object') {
+      let sibling = post.firstChild
+      let previousSibilling = previousHTML.firstChild
+      let changedElement = null
+      while (sibling && previousSibilling) {
+        if (sibling.isEqualNode(previousSibilling)) {
+          sibling = sibling.nextSibling
+          previousSibilling = previousSibilling.nextSibling
+        } else {
+          changedElement = sibling
+          break
+        }
+      }
+      if (changedElement) {
+        const parentDiv = document.getElementById('scrollableParent')
+        if (parentDiv && changedElement instanceof HTMLElement) {
+          parentDiv.scrollTop = changedElement.offsetTop - 100
+        }
+      }
+    }
+
+    hljs.highlightAll()
+  }, [previousHTML])
 
   return (
-    <div className="flex break-all p-2 bg-white">
-      <div dangerouslySetInnerHTML={{ __html: postTextHTML }} />
+    <div id='scrollableParent' className='mx-auto pb-8 overflow-x-hidden mr-0'>
+      <div className='mx-auto p-2 max-w-3xl'>
+        {html && (
+          <div id='post' className='break-words' />
+        )}
+      </div>
     </div>
   )
 }
