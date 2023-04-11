@@ -39,12 +39,10 @@ export default function Home() {
                 <h2
                   className='text-2xl font-bold text-slate-100 mb-4'
                 >{formatTitle(post.title)}</h2>
-                <p>
-                  <div
-                    className='pointer-events-none'
-                    dangerouslySetInnerHTML={{ __html: formatContent(post.content) }}
-                  />
-                </p>
+                <div
+                  className='pointer-events-none'
+                  dangerouslySetInnerHTML={{ __html: formatContent(post.content) }}
+                />
                 <div className='flex justify-between pt-4 mt-auto'>
                   <p className='text-sm text-slate-100'>
                     {formatPostCreatedAt(post.createdAt)}

@@ -15,7 +15,7 @@ export default function Layout({
         <meta name="description" content="" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex flex-col h-screen w-screen bg-black overflow-y-auto">
+      <main className="flex flex-col min-h-screen w-screen bg-black overflow-y-auto">
         <Nav />
         {children}
       </main>

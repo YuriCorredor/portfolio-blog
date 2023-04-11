@@ -1,31 +1,31 @@
-import { z } from "zod";
+import { z } from 'zod'
 
 import {
   createTRPCRouter,
   publicProcedure,
   adminProcedure,
-} from "~/server/api/trpc";
+} from '~/server/api/trpc'
 
-const createPostScheam = z.object({
+const createPostScheama = z.object({
   title: z.string(),
   content: z.string(),
-});
+})
 
 export const postRouter = createTRPCRouter({
   createPost: adminProcedure
-    .input(createPostScheam)
+    .input(createPostScheama)
     .mutation(({ ctx, input }) => {
-      const { user } = ctx.session;
-      const { title, content } = input;
+      const { user } = ctx.session
+      const { title, content } = input
 
       return ctx.prisma.post.create({
         data: {
           title,
-          content,
+          content: content.trim(),
           authorId: user.id,
           published: true,
         },
-      });
+      })
     }
   ),
 
@@ -44,13 +44,13 @@ export const postRouter = createTRPCRouter({
           },
         },
       },
-    });
+    })
 
     // return first 20 words of content
     return posts.map((post) => ({
       ...post,
-      content: post.content.split(" ").slice(0, 20).join(" "),
-    }));
+      content: post.content.split(' ').slice(0, 20).join(' '),
+    }))
   }),
 
   getPost: publicProcedure
@@ -83,6 +83,6 @@ export const postRouter = createTRPCRouter({
             }
           }
         },
-      });
+      })
     }),
-});
+})
