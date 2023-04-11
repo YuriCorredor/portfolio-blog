@@ -10,8 +10,8 @@ import hljs from 'highlight.js'
 export default function Home({ post }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <Layout>
-      <div className='flex flex-col mx-auto'>
-        <div className='flex flex-col mt-24 mb-8 p-2 max-w-3xl overflow-x-hidden break-words'>
+      <div className='flex'>
+        <div className='flex flex-col mt-24 mb-8 p-2 max-w-3xl mx-auto overflow-x-hidden'>
           <div className='break-words' dangerouslySetInnerHTML={{ __html: post?.content || '' }} />
         </div>
       </div>
