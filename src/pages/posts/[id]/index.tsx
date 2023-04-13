@@ -16,7 +16,7 @@ export default function Home({ post }: InferGetStaticPropsType<typeof getStaticP
       hljs.configure({
         ignoreUnescapedHTML: true,
       })
-      hljs.highlightBlock(codeBlock)
+      hljs.highlightElement(codeBlock)
     })
 
     const postElement = document.getElementById('post')
