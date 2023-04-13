@@ -48,7 +48,7 @@ export default function Home() {
                     {formatPostCreatedAt(post.createdAt)}
                   </p>
                   <Link
-                    href={`/post/${post.id}`}
+                    href={`/posts/${post.id}`}
                     className='text-sm font-semibold text-sky-400 hover:underline transition-all cursor-pointer'
                   >Read more</Link>
                 </div>
