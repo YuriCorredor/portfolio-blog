@@ -1,8 +1,13 @@
 import { atom } from 'jotai'
+import { atomWithStorage, createJSONStorage } from 'jotai/utils'
 
-export const postTextAtom = atom('')
+export const postTextAtom = atomWithStorage('postTitle', '', {
+  ...createJSONStorage(() => localStorage)
+})
 
-export const postTitleAtom = atom('')
+export const postTitleAtom = atomWithStorage('postContent', '', {
+  ...createJSONStorage(() => localStorage)
+})
 
 export const postAtom = atom((get) => {
   const title = get(postTitleAtom)
