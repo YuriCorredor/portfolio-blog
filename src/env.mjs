@@ -17,6 +17,7 @@ const server = z.object({
   ),
   GITHUB_CLIENT_ID: z.string().min(1),
   GITHUB_CLIENT_SECRET: z.string().min(1),
+  INVALIDATION_SECRET: z.string().min(1),
 });
 
 /**
@@ -40,6 +41,7 @@ const processEnv = {
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+  INVALIDATION_SECRET: process.env.INVALIDATION_SECRET,
 };
 
 // Don't touch the part below

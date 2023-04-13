@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { env } from '~/env.mjs'
 
 import {
   createTRPCRouter,
@@ -14,11 +15,11 @@ const createPostScheama = z.object({
 export const postRouter = createTRPCRouter({
   createPost: adminProcedure
     .input(createPostScheama)
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       const { user } = ctx.session
       const { title, content } = input
 
-      return ctx.prisma.post.create({
+      const post = await ctx.prisma.post.create({
         data: {
           title,
           content: content.trim(),
@@ -26,6 +27,13 @@ export const postRouter = createTRPCRouter({
           published: true,
         },
       })
+
+      fetch(`${env.NEXTAUTH_URL}/api/revalidate?secret=${env.INVALIDATION_SECRET}&post_id=${post.id}`)
+        .catch((err) => {
+          console.error(err)
+        })
+
+      return post
     }
   ),
 
