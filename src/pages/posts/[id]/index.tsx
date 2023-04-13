@@ -1,13 +1,25 @@
 import { useEffect, useState } from 'react'
 import Layout from '~/components/Layout'
 import { prisma } from '~/server/db'
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { Post } from '@prisma/client'
 import { makeHTMLFromMarkdown } from '~/utils/convertFromMDToHTML'
 import { JSDOM } from 'jsdom'
 import hljs from 'highlight.js'
 
-export default function Home({ post }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Home({ post }: InferGetStaticPropsType<typeof getStaticProps>) {
+  useEffect(() => {
+    if (!post) return
+    const postTextHTML = makeHTMLFromMarkdown(`${post.title}\n${post.content}`)
+    const body = new JSDOM(postTextHTML).window.document.body
+    const codeBlocks = body.querySelectorAll('pre')
+    codeBlocks.forEach((codeBlock) => {
+      hljs.highlightBlock(codeBlock)
+    })
+
+    post.content = body.innerHTML
+  }, [])
+
   return (
     <Layout>
       <div className='flex'>
@@ -23,8 +35,25 @@ type ServerProps = {
   post?: Post | null
 }
 
-export const getServerSideProps: GetServerSideProps<ServerProps> = async (context) => {
-  const id = context.params?.id
+export const getStaticPaths = async () => {
+  const posts = await prisma.post.findMany({
+    select: {
+      id: true,
+    },
+  })
+
+  return {
+    paths: posts.map((post) => ({
+      params: {
+        id: post.id,
+      },
+    })),
+    fallback: true,
+  }
+}
+
+export const getStaticProps: GetStaticProps<ServerProps> = async ({ params }) => {
+  const id = params?.id
   let post = null
 
   if (id && typeof id === 'string') {
@@ -41,17 +70,6 @@ export const getServerSideProps: GetServerSideProps<ServerProps> = async (contex
         }
       }
     })
-
-    if (post) {
-      const postTextHTML = makeHTMLFromMarkdown(`${post.title}\n${post.content}`)
-      const body = new JSDOM(postTextHTML).window.document.body
-      const codeBlocks = body.querySelectorAll('pre')
-      codeBlocks.forEach((codeBlock) => {
-        hljs.highlightBlock(codeBlock)
-      })
-
-      post.content = body.innerHTML
-    }
   }
 
   if (!post) {
