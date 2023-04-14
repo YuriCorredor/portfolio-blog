@@ -10,7 +10,6 @@ export const handler: NextApiHandler = async (req, res) => {
   }
 
   try {
-    await res.revalidate('/')
     await res.revalidate(`/posts/${postId}`)
     return res.json({ revalidated: true })
   } catch (err) {
