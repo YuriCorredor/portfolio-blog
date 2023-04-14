@@ -28,27 +28,15 @@ export const postRouter = createTRPCRouter({
         },
       })
 
-      let revalidationResponse = null
-      let revalidationError = null
-      try {
-        const res = await fetch(`https://${env.NEXTAUTH_URL}/api/revalidate?secret=${env.INVALIDATION_SECRET}&post_id=${post.id}`)
-        revalidationError = res
-        revalidationResponse = await res.json()
-      } catch (err) {
-        revalidationResponse = null
-        revalidationError = err
-      }
+      fetch(`https://${env.NEXTAUTH_URL}/api/revalidate?secret=${env.INVALIDATION_SECRET}&post_id=${post.id}`)
+        .catch((err) => {
+          console.error(err)
+        })
 
-      return {
-        post,
-        revalidationResponse,
-        test: env.NEXTAUTH_URL,
-        revalidationError,
-      }
+      return post
     }
   ),
 
-  // TODO: pagination and sorting
   getAllPosts: publicProcedure
     .query(async ({ ctx }) => {
     const posts = await ctx.prisma.post.findMany({
@@ -65,7 +53,6 @@ export const postRouter = createTRPCRouter({
       },
     })
 
-    // return first 20 words of content
     return posts.map((post) => ({
       ...post,
       content: post.content.split(' ').slice(0, 20).join(' '),
