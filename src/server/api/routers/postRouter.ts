@@ -31,7 +31,7 @@ export const postRouter = createTRPCRouter({
       let revalidationResponse = null
       let revalidationError = null
       try {
-        const res = await fetch(`${env.NEXTAUTH_URL}/api/revalidate?secret=${env.INVALIDATION_SECRET}&post_id=${post.id}`)
+        const res = await fetch(`https://${env.NEXTAUTH_URL}/api/revalidate?secret=${env.INVALIDATION_SECRET}&post_id=${post.id}`)
         revalidationError = res
         revalidationResponse = await res.json()
       } catch (err) {
