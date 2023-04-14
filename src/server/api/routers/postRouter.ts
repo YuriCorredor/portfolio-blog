@@ -39,6 +39,7 @@ export const postRouter = createTRPCRouter({
       return {
         post,
         revalidationResponse,
+        test: env.NEXTAUTH_URL
       }
     }
   ),
