@@ -17,6 +17,7 @@
     "@trpc/next": "^10.18.0",
     "@trpc/react-query": "^10.18.0",
     "@trpc/server": "^10.18.0",
+    "date-fns": "^2.29.3",
     "highlight.js": "^11.7.0",
     "jotai": "^2.0.3",
     "jsdom": "^21.1.1",
