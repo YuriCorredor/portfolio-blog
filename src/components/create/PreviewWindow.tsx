@@ -50,7 +50,7 @@ export default function PreviewWindow() {
   }, [previousHTML])
 
   return (
-    <div id='scrollableParent' className='mx-auto pb-8 overflow-x-hidden mr-0'>
+    <div id='scrollableParent' className='mx-auto pb-8 overflow-x-hidden'>
       <div className='mx-auto p-2 max-w-3xl'>
         {html && (
           <div id='post' className='break-words' />
