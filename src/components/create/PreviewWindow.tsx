@@ -10,6 +10,7 @@ export default function PreviewWindow() {
   const [html, setHTML] = useState<HTMLElement>()
 
   useEffect(() => {
+    console.log(post)
     const postTextHTML = makeHTMLFromMarkdown(post)
     const newHtml = new DOMParser().parseFromString(postTextHTML, 'text/html').body
     setPreviousHTML(html)

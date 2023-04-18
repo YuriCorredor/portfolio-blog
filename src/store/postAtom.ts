@@ -23,6 +23,6 @@ export const postAtom = atom((get) => {
   const title = currentPost?.title || ''
   const text = currentPost?.content || ''
 
-  return `${title} \n ${text}`
+  return `${title}\n${text}`
 })
 
