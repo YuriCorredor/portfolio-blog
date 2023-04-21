@@ -1,6 +1,5 @@
 import { z } from 'zod'
 import { env } from '~/env.mjs'
-import axios from 'axios'
 
 import {
   createTRPCRouter,
