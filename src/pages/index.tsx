@@ -81,7 +81,6 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   return {
     props: {
       posts: JSON.parse(JSON.stringify(posts)) as Post[] | null,
-    },
-    revalidate: 60,
+    }
   }
 }

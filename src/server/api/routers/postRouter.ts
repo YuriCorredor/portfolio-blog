@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { env } from '~/env.mjs'
+import axios from 'axios'
 
 import {
   createTRPCRouter,
@@ -28,8 +29,9 @@ export const postRouter = createTRPCRouter({
         },
       })
 
-      fetch(`https://${env.NEXTAUTH_URL}/api/revalidate?secret=${env.INVALIDATION_SECRET}&post_id=${post.id}`)
+      await fetch(`${env.NEXTAUTH_URL}/api/revalidate?secret=${env.INVALIDATION_SECRET}&post_id=${post.id}`)
         .catch((err) => {
+          console.log('Error revalidating')
           console.error(err)
         })
 
