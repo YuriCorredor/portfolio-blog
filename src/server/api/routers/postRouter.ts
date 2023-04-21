@@ -28,12 +28,6 @@ export const postRouter = createTRPCRouter({
         },
       })
 
-      await fetch(`${env.NEXTAUTH_URL}/api/revalidate?secret=${env.INVALIDATION_SECRET}&post_id=${post.id}`)
-        .catch((err) => {
-          console.log('Error revalidating')
-          console.error(err)
-        })
-
       return post
     }
   ),
