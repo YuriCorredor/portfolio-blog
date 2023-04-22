@@ -5,6 +5,7 @@ import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { Post } from '@prisma/client'
 import { makeHTMLFromMarkdown } from '~/utils/convertFromMDToHTML'
 import hljs from 'highlight.js'
+import { PostComments } from '~/components/posts/Comments'
 
 export default function Home({ post }: InferGetStaticPropsType<typeof getStaticProps>) {
   useEffect(() => {
@@ -32,6 +33,7 @@ export default function Home({ post }: InferGetStaticPropsType<typeof getStaticP
           <div id='post' className='break-words' />
         </div>
       </div>
+      <PostComments />
     </Layout>
   )
 }

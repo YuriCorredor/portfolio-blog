@@ -74,7 +74,7 @@ export default function Nav() {
   }, [menuRef, contentRef])
 
   return (
-    <nav ref={navBar} className='flex fixed w-full text-white transition-all duration-300'>
+    <nav ref={navBar} className='flex fixed w-full text-white transition-all duration-300 z-50'>
       <div className='w-full justify-center flex p-4 border-b-[1px] bg-black bg-opacity-75 h-[69px] transition-all'>
         <div className='max-w-7xl flex w-full justify-between items-center flex-row whitespace-nowrap'>
           <div className='flex font-nav text-xl md:text-2xl lg:text-3xl font-extrabold'>

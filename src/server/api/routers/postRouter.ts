@@ -1,14 +1,19 @@
 import { z } from 'zod'
-import { env } from '~/env.mjs'
 
 import {
   createTRPCRouter,
   publicProcedure,
   adminProcedure,
+  protectedProcedure,
 } from '~/server/api/trpc'
 
 const createPostScheama = z.object({
   title: z.string(),
+  content: z.string(),
+})
+
+const createCommentSchema = z.object({
+  postId: z.string(),
   content: z.string(),
 })
 
@@ -54,36 +59,75 @@ export const postRouter = createTRPCRouter({
     }))
   }),
 
-  getPost: publicProcedure
+  getPostComments: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(({ ctx, input }) => {
-      return ctx.prisma.post.findUnique({
+      return ctx.prisma.postComment.findMany({
         where: {
-          id: input.id,
+          postId: input.id,
         },
         include: {
           author: {
             select: {
               name: true,
               image: true,
+              id: true,
             },
           },
-          comments: {
-            select: {
-              id: true,
-              content: true,
-              responseToCommentId: true,
-              createdAt: true,
-              updatedAt: true,
-              author: {
-                select: {
-                  name: true,
-                  image: true,
-                },
-              },
-            }
-          }
         },
+        orderBy: {
+          createdAt: 'desc',
+        }
       })
     }),
+
+  createPostComment: protectedProcedure
+    .input(createCommentSchema)
+    .mutation(async ({ ctx, input }) => {
+      const { user } = ctx.session
+
+      const comment = await ctx.prisma.postComment.create({
+        data: {
+          content: input.content.trim(),
+          postId: input.postId,
+          authorId: user.id,
+        },
+      })
+
+      return comment
+    }
+  ),
+
+  deletePostComment: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { user } = ctx.session
+
+      const comment = await ctx.prisma.postComment.findUnique({
+        where: {
+          id: input.id,
+        },
+        select: {
+          authorId: true,
+        },
+      })
+
+      if (!comment) {
+        throw new Error('Comment not found')
+      }
+
+      if (comment.authorId !== user.id) {
+        throw new Error('Not authorized')
+      }
+
+      await ctx.prisma.postComment.delete({
+        where: {
+          id: input.id,
+        },
+      })
+
+      return true
+    }
+  ),
+
 })
