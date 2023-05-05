@@ -19,8 +19,8 @@ export default function Layout({
       <main className="flex flex-col min-h-screen w-screen bg-black overflow-y-auto">
         <Nav />
         {children}
-        <Footer />
       </main>
+      <Footer />
     </>
   )
 }

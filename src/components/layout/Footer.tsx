@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className='flex flex-col justify-center items-center w-full h-16 bg-black text-white'>
+    <footer className='flex flex-col justify-center items-center w-full bg-black text-white'>
       <div className="flex w-full justify-center border-t-[1px] border-slate-700">
           <p className="p-2 pt-3 text-xs text-bold text-slate-200">© Copyright | Yuri Corredor | Made with ❤️ and Next.js</p>
       </div>
