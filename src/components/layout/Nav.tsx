@@ -1,4 +1,5 @@
 import { signIn, signOut, useSession } from 'next-auth/react'
+import Link from 'next/link'
 import { forwardRef, Ref, useEffect, useRef, useState } from 'react'
 
 const DEFAULT_PROFILE_IMAGE = 'default-profile-pic.jpg'
@@ -21,9 +22,11 @@ const Menu = forwardRef(({ showMenu }: { showMenu: boolean }, ref: Ref<HTMLDivEl
 })
 
 export default function Nav() {
+  const navBar = useRef<HTMLDivElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const [showMenu, setShowMenu] = useState(false)
+  const [prevScroll, setPrevScroll] = useState(Number.MAX_SAFE_INTEGER)
   const { data: sessionData } = useSession()
   const isSignedIn = Boolean(sessionData)
   const userName = sessionData?.user?.name
@@ -32,6 +35,27 @@ export default function Nav() {
   const handleToogleMenu = () => {
     setShowMenu(prevState => !prevState)
   }
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (navBar.current) {
+        const currentScroll = window.scrollY
+        if (prevScroll > currentScroll) {
+          navBar.current.style.top = '0'
+        } else {
+          navBar.current.style.top = '-74px'
+          setShowMenu(false)
+        }
+        setPrevScroll(currentScroll)
+      }
+    }
+
+    document.addEventListener('scroll', handleScroll)
+
+    return () => {
+      document.removeEventListener('scroll', handleScroll)
+    }
+  }, [navBar, prevScroll])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -50,14 +74,14 @@ export default function Nav() {
   }, [menuRef, contentRef])
 
   return (
-    <nav className='flex fixed w-full text-white transition-all'>
+    <nav ref={navBar} className='flex fixed w-full text-white transition-all duration-300 z-50'>
       <div className='w-full justify-center flex p-4 border-b-[1px] bg-black bg-opacity-75 h-[69px] transition-all'>
         <div className='max-w-7xl flex w-full justify-between items-center flex-row whitespace-nowrap'>
           <div className='flex font-nav text-xl md:text-2xl lg:text-3xl font-extrabold'>
-            <a href='https://yuricorredor.com.br/' className='cursor-pointer hover:text-[#ddd] hover:scale-110 transition-all'>
+            <Link href='/' className='cursor-pointer hover:text-[#ddd] hover:scale-110 transition-all'>
               <span>{`<`}Yuri Corredor</span>
               <span className='pl-2'>{'/>'}</span>
-            </a>
+            </Link>
           </div>
             {isSignedIn ? (
               <>

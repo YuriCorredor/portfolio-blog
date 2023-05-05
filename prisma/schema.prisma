@@ -64,7 +64,7 @@ model User {
 model Post {
   id        String        @id @default(cuid())
   title     String
-  content   String
+  content   String        @db.Text
   published Boolean       @default(false)
   authorId  String
   author    User          @relation(fields: [authorId], references: [id])

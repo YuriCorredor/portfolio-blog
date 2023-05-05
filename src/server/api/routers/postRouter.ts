@@ -1,35 +1,42 @@
-import { z } from "zod";
+import { z } from 'zod'
 
 import {
   createTRPCRouter,
   publicProcedure,
   adminProcedure,
-} from "~/server/api/trpc";
+  protectedProcedure,
+} from '~/server/api/trpc'
 
-const createPostScheam = z.object({
+const createPostScheama = z.object({
   title: z.string(),
   content: z.string(),
-});
+})
+
+const createCommentSchema = z.object({
+  postId: z.string(),
+  content: z.string(),
+})
 
 export const postRouter = createTRPCRouter({
   createPost: adminProcedure
-    .input(createPostScheam)
-    .mutation(({ ctx, input }) => {
-      const { user } = ctx.session;
-      const { title, content } = input;
+    .input(createPostScheama)
+    .mutation(async ({ ctx, input }) => {
+      const { user } = ctx.session
+      const { title, content } = input
 
-      return ctx.prisma.post.create({
+      const post = await ctx.prisma.post.create({
         data: {
           title,
-          content,
+          content: content.trim(),
           authorId: user.id,
           published: true,
         },
-      });
+      })
+
+      return post
     }
   ),
 
-  // TODO: pagination and sorting
   getAllPosts: publicProcedure
     .query(async ({ ctx }) => {
     const posts = await ctx.prisma.post.findMany({
@@ -44,45 +51,83 @@ export const postRouter = createTRPCRouter({
           },
         },
       },
-    });
+    })
 
-    // return first 20 words of content
     return posts.map((post) => ({
       ...post,
-      content: post.content.split(" ").slice(0, 20).join(" "),
-    }));
+      content: post.content.split(' ').slice(0, 20).join(' '),
+    }))
   }),
 
-  getPost: publicProcedure
+  getPostComments: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(({ ctx, input }) => {
-      return ctx.prisma.post.findUnique({
+      return ctx.prisma.postComment.findMany({
         where: {
-          id: input.id,
+          postId: input.id,
         },
         include: {
           author: {
             select: {
               name: true,
               image: true,
+              id: true,
             },
           },
-          comments: {
-            select: {
-              id: true,
-              content: true,
-              responseToCommentId: true,
-              createdAt: true,
-              updatedAt: true,
-              author: {
-                select: {
-                  name: true,
-                  image: true,
-                },
-              },
-            }
-          }
         },
-      });
+        orderBy: {
+          createdAt: 'desc',
+        }
+      })
     }),
-});
+
+  createPostComment: protectedProcedure
+    .input(createCommentSchema)
+    .mutation(async ({ ctx, input }) => {
+      const { user } = ctx.session
+
+      const comment = await ctx.prisma.postComment.create({
+        data: {
+          content: input.content.trim(),
+          postId: input.postId,
+          authorId: user.id,
+        },
+      })
+
+      return comment
+    }
+  ),
+
+  deletePostComment: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { user } = ctx.session
+
+      const comment = await ctx.prisma.postComment.findUnique({
+        where: {
+          id: input.id,
+        },
+        select: {
+          authorId: true,
+        },
+      })
+
+      if (!comment) {
+        throw new Error('Comment not found')
+      }
+
+      if (comment.authorId !== user.id) {
+        throw new Error('Not authorized')
+      }
+
+      await ctx.prisma.postComment.delete({
+        where: {
+          id: input.id,
+        },
+      })
+
+      return true
+    }
+  ),
+
+})

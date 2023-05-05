@@ -1,11 +1,12 @@
 import Layout from '~/components/Layout'
-import { api } from '~/utils/api'
 import { makeHTMLFromMarkdown } from '~/utils/convertFromMDToHTML'
 import Link from 'next/link'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
+import { prisma } from '~/server/db'
+import { Post } from '@prisma/client'
+import { format } from 'date-fns'
 
-export default function Home() {
-  const { data: posts } = api.post.getAllPosts.useQuery()
-
+export default function Home({ posts }: InferGetStaticPropsType<typeof getStaticProps>) {
   const formatTitle = (title: string) => {
     return title.slice(2)
   }
@@ -15,8 +16,8 @@ export default function Home() {
   }
 
   const formatPostCreatedAt = (createdAt: Date) => {
-    const date = new Date(createdAt)
-    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
+    const date = format(new Date(createdAt), 'dd/MM/yyyy')
+    return date
   }
 
   return (
@@ -48,7 +49,7 @@ export default function Home() {
                     {formatPostCreatedAt(post.createdAt)}
                   </p>
                   <Link
-                    href={`/post/${post.id}`}
+                    href={`/posts/${post.id}`}
                     className='text-sm font-semibold text-sky-400 hover:underline transition-all cursor-pointer'
                   >Read more</Link>
                 </div>
@@ -59,4 +60,27 @@ export default function Home() {
       </div>
     </Layout>
   )
+}
+
+type Props = {
+  posts: Post[] | null
+}
+
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  let posts = await prisma.post.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  })
+
+  posts = posts.map((post) => ({
+    ...post,
+    content: post.content.split(' ').slice(0, 20).join(' '),
+  }))
+
+  return {
+    props: {
+      posts: JSON.parse(JSON.stringify(posts)) as Post[] | null,
+    }
+  }
 }
