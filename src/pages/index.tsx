@@ -22,7 +22,7 @@ export default function Home({ posts }: InferGetStaticPropsType<typeof getStatic
 
   return (
     <Layout>
-      <div className='flex flex-col items-center justify-center min-h-screen mt-12 mb-28'>
+      <div className='flex flex-col items-center justify-center min-h-screen mt-16 mb-28'>
         <div className='flex flex-col items-center justify-center'>
           <h1 className='font-bold text-text-heading text-center text-4xl md:text-5xl pt-4 pb-2 overflow-hidden text-white mb-12'>
             <span className='bg-gradient-to-bl bg-no-repeat bg-bottom bg-[length:90%_40%] from-blue-400 to-blue-600'>
