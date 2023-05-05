@@ -1,5 +1,6 @@
 import Head from "next/head"
 import Nav from "./layout/Nav"
+import Footer from "./layout/Footer"
 
 type ComponentProps = {
   children: React.ReactNode
@@ -18,6 +19,7 @@ export default function Layout({
       <main className="flex flex-col h-screen w-screen bg-black overflow-y-auto">
         <Nav />
         {children}
+        <Footer />
       </main>
     </>
   )
