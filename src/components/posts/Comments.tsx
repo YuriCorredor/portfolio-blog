@@ -93,7 +93,7 @@ export function PostComments() {
           </button>
         </div>
       </div>
-      <div className='flex flex-col w-full mt-8'>
+      <div className='flex flex-col w-full mt-8 px-2'>
         {comments?.map(comment => (
           <Comment key={comment.id} comment={comment} />
         ))}
