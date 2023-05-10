@@ -46,7 +46,7 @@ export function Comment({ comment }: Props) {
       src={author.image || DEFAULT_PROFILE_IMAGE}
       alt='User profile image'
     />
-    <div className='w-full flex flex-col mx-4'>
+    <div className='w-full flex flex-col mx-4 break-words overflow-hidden'>
       <div className='flex items-center justify-between w-full mb-1'>
         <div className='flex items-center'>
           <p className='text-sm font-semibold text-gray-200 max-w-xs whitespace-nowrap overflow-hidden text-ellipsis'>
