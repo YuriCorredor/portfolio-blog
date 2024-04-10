@@ -84,10 +84,13 @@ export const postRouter = createTRPCRouter({
   createPostComment: publicProcedure
     .input(createCommentSchema)
     .mutation(async ({ ctx, input }) => {
+      const session = ctx.session
+
       const comment = await ctx.prisma.postComment.create({
         data: {
           content: input.content.trim(),
           postId: input.postId,
+          authorId: session?.user ? session.user.id : null,
         },
       })
 
