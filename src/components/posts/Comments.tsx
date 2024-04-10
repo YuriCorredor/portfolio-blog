@@ -1,6 +1,6 @@
 import { api } from '~/utils/api'
 import { useRouter } from 'next/router'
-import { useSession, signIn } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { useEffect, useRef, useState } from 'react'
 import { Comment } from './Comment'
 
@@ -25,7 +25,6 @@ export function PostComments() {
     }
   })
   const [comment, setComment] = useState('')
-  const isSignedIn = Boolean(sessionData)
   const userImage = sessionData?.user?.image || DEFAULT_PROFILE_IMAGE
 
   const handlePostComment = async () => {
@@ -37,12 +36,6 @@ export function PostComments() {
     if (textAreaRef.current) {
       textAreaRef.current?.setAttribute('style', `height: ${textAreaRef.current.scrollHeight}px; overflow-y: hidden;`)
 
-    }
-  }
-
-  const handleCommentFocus = () => {
-    if (!isSignedIn) {
-      signIn(undefined, { callbackUrl: `${window.location.href}#${COMMENTS_DIV_ID}` })
     }
   }
 
@@ -80,13 +73,12 @@ export function PostComments() {
             ref={textAreaRef}
             value={comment}
             onChange={e => setComment(e.target.value)}
-            onFocus={handleCommentFocus}
             placeholder='Add a comment...'
             className='w-full px-4 py-2 text-sm text-gray-200 bg-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none'
           />
           <button
             onClick={handlePostComment}
-            disabled={!isSignedIn || comment.trim() === '' || isLoading}
+            disabled={comment.trim() === '' || isLoading}
             className='px-4 py-2 mt-2 text-sm font-semibold text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-500'
           >
             Post
