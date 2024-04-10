@@ -76,8 +76,8 @@ model Post {
 model PostComment {
   id                  String   @id @default(cuid())
   content             String
-  authorId            String
-  author              User     @relation(fields: [authorId], references: [id])
+  authorId            String?
+  author              User?     @relation(fields: [authorId], references: [id])
   postId              String
   post                Post     @relation(fields: [postId], references: [id])
   responseToCommentId String?
